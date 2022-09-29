@@ -115,7 +115,12 @@ public class Example_ParentOpMode extends LinearOpMode {
 
         initialize();
 
-        // Wait for the game to start (driver presses PLAY)
+        // Init loop - optional
+        while(opModeInInit()){
+            // Code in here will loop continuously until OpMode is started
+        }
+
+        // Wait for the game to start (driver presses PLAY) - May not be needed if using an init Loop
         waitForStart();
         runtime.reset();
 
@@ -141,7 +146,8 @@ public class Example_ParentOpMode extends LinearOpMode {
     }
 
     /*****************************/
-    //Controls should be mapped here to avoid
+    //Controls should be mapped here to avoid accessing gamepad directly in other functions/methods
+    //This also makes it simpler to re-map controls as desired
     //CONTROLLER MAP
 
     // Thumbsticks
@@ -160,11 +166,11 @@ public class Example_ParentOpMode extends LinearOpMode {
         return true;
     }
 
-    public boolean clawButton(){
+    public boolean pushButton(){
         return gamepad1.x;
     }
 
-    public boolean shootButton(){
+    public boolean triggerButton(){
         if((gamepad1.right_trigger>.25)||(gamepad2.right_trigger>.25)){
             return true;         // Converts analog triggers into digital button presses (booleans)
         }
