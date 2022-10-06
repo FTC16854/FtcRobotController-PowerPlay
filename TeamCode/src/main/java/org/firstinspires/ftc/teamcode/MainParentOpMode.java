@@ -32,10 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -137,10 +134,6 @@ public class MainParentOpMode extends LinearOpMode {
 
             //include emergency stop check in all runOpMode() functions/methods
                 //implementation depends on which E-stop function will be used (boolean/void)
-            if(emergencyStopped()){
-                //terminateOpModeNow();   // New method in 2022. (Immediately, Cleanly exits OpMode)
-                break;
-            }
 
             //checkEmergencyStop(); // Stops motors and Terminates if buttons are pressed
             //without additional code in the while(opModeIsActive) loop.
@@ -175,56 +168,37 @@ public class MainParentOpMode extends LinearOpMode {
         // check for combination of buttons to be pressed before returning true
         return (gamepad1.b&&gamepad1.y) || (gamepad2.b&&gamepad2.y);
     }
-
-    public boolean clawButton(){
-        return gamepad1.x;
-    }
-
-    public boolean shootButton(){
-        if((gamepad1.right_trigger>.25)||(gamepad2.right_trigger>.25)){
-            return true;         // Converts analog triggers into digital button presses (booleans)
-        }
-        else{
-            return false;
-        }
-    }
+    
 
 
-    /****************************/
+    /**
+     * @return**************************/
     // Emergency Stop Functions
         // Only one is needed.
         // If using boolean version, call to function will need to be
         // placed in conditional (if/then) statement with code to break from loop or terminate opmode.
 
-    public boolean emergencyStopped(){
+    public void checkEmergencyStop() {
         if (emergencyButtons()) {
-            //stop all motors, servos, etc.
-            return true;
-        }
-        else {
-            return false;
+            terminateOpModeNow();
         }
     }
-
-    public void checkEmergencyStop(){
-        if(emergencyButtons()){
-            //stop all motors, servos, etc.
-            terminateOpModeNow();   // Force exit of OpMode
-        }
-    }
-
-
 
     /*****************************/
     //Drive Methods
+public void tankDriving(double left, double right){
+    rightFront.setPower(right);
+    rightBack.setPower(right);
+    leftFront.setPower(left);
+    leftBack.setPower(left);
+}
+    public void stopDrive(){
+        tankDriving(0,0);
+    }
 
     // Assign left and right drive speed using arguments/parameters rather than hardcoding
     // thumb stick values inside function body. This will allow tank drive to be reused for
     // autonomous programs without additional work
-    public void tankdrive(double left, double right){
-
-    }
-
 
 
 
