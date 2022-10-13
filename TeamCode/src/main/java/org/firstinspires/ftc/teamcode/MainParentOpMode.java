@@ -33,7 +33,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Original FTC opmode header block
@@ -67,6 +69,11 @@ public class MainParentOpMode extends LinearOpMode {
     private DcMotor rightBack = null;
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
+
+    private DcMotor liftMotor = null;
+
+    private Servo gripperServo = null;
+
     //private CRServo intakeServo = null;
     //private Servo shooterFlipper = null;
 
@@ -83,6 +90,11 @@ public class MainParentOpMode extends LinearOpMode {
         leftFront = hardwareMap.get(DcMotor.class, "lf_drive");
         leftBack = hardwareMap.get(DcMotor.class, "lb_drive");
         rightBack = hardwareMap.get(DcMotor.class, "rb_drive");
+
+        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor");
+
+        gripperServo = hardwareMap.get(Servo.class, "gripper_servo");
+
         //intakeServo = hardwareMap.get(CRServo.class, "intake_servo");
         //shooterFlipper = hardwareMap.get(Servo.class,"shooterFlipper_servo");
 
@@ -94,6 +106,10 @@ public class MainParentOpMode extends LinearOpMode {
         rightBack.setDirection(DcMotor.Direction.REVERSE);
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
+
+        liftMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        //gripperServo.setDirection(Servo.Direction.FORWARD);
 
 
         //Set range for special Servos
@@ -150,7 +166,6 @@ public class MainParentOpMode extends LinearOpMode {
     private double leftStick_X(){
         return gamepad1.left_stick_x;
         }
-
     private double leftStick_Y(){
         return gamepad1.left_stick_y;
     }
@@ -168,7 +183,21 @@ public class MainParentOpMode extends LinearOpMode {
         // check for combination of buttons to be pressed before returning true
         return (gamepad1.b&&gamepad1.y) || (gamepad2.b&&gamepad2.y);
     }
-    
+
+    // Rename these based on function
+    private boolean right_bumper(){return gamepad1.right_bumper;}
+    private boolean left_bumper(){return gamepad1.left_bumper;}
+    private boolean b_button(){return gamepad1.b;}
+    private boolean y_button(){return gamepad1.y;}
+    private boolean a_button(){return gamepad1.a;}
+    private boolean x_button(){return gamepad1.x;}
+
+
+
+    //Constants
+    double liftPower = 0.6;
+    double servoGripPosition = 0.7;
+
 
 
     /**
@@ -204,7 +233,22 @@ public void tankDriving(double left, double right){
 
     /*****************************/
     //More Methods (Functions)
+//TODO add if statement for if button is pressed
+    //LIFT METHODS
+public void liftUp(){
+    liftMotor.setPower(liftPower);
+}
+public void liftDown(){
 
+    liftMotor.setPower(-liftPower);
+}
+
+public void GripperIn(){
+    gripperServo.setPosition(servoGripPosition);
+}
+public void GripperOut(){
+    gripperServo.setPosition(0);
+}
 
 
     /*****************************/
