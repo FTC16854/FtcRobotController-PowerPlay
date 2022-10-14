@@ -77,10 +77,11 @@ public class MainParentOpMode extends LinearOpMode {
     //private CRServo intakeServo = null;
     //private Servo shooterFlipper = null;
 
-    //Other Global Variables
-    //put global variables here...
-    //
-    //
+    // Global Variables/Constants
+    double liftPower = 0.6;
+    double servoGripPosition = 0.7;
+
+
 
     public void initialize(){
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -194,12 +195,6 @@ public class MainParentOpMode extends LinearOpMode {
 
 
 
-    //Constants
-    double liftPower = 0.6;
-    double servoGripPosition = 0.7;
-
-
-
     /**
      * @return**************************/
     // Emergency Stop Functions
@@ -215,19 +210,21 @@ public class MainParentOpMode extends LinearOpMode {
 
     /*****************************/
     //Drive Methods
-public void tankDriving(double left, double right){
-    rightFront.setPower(right);
-    rightBack.setPower(right);
-    leftFront.setPower(left);
-    leftBack.setPower(left);
-}
+
+    // Assign left and right drive speed using arguments/parameters rather than hardcoding
+    //    // thumb stick values inside function body. This will allow tank drive to be reused for
+    //    // autonomous programs without additional work
+    public void tankDriving(double left, double right){
+        rightFront.setPower(right);
+        rightBack.setPower(right);
+        leftFront.setPower(left);
+        leftBack.setPower(left);
+    }
+
     public void stopDrive(){
         tankDriving(0,0);
     }
 
-    // Assign left and right drive speed using arguments/parameters rather than hardcoding
-    // thumb stick values inside function body. This will allow tank drive to be reused for
-    // autonomous programs without additional work
 
 
 
@@ -238,14 +235,15 @@ public void tankDriving(double left, double right){
 public void liftUp(){
     liftMotor.setPower(liftPower);
 }
-public void liftDown(){
 
+public void liftDown(){
     liftMotor.setPower(-liftPower);
 }
 
 public void GripperIn(){
     gripperServo.setPosition(servoGripPosition);
 }
+
 public void GripperOut(){
     gripperServo.setPosition(0);
 }
