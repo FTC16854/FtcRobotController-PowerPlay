@@ -225,6 +225,23 @@ public class MainParentOpMode extends LinearOpMode {
         tankDriving(0,0);
     }
 
+    public void holonomic_drive() {
+        /*
+        So information wise this little funny overrated totally cool variable shows us our left stick movement
+        by using the hypotenuse function
+         */
+        double LeftStickMovement = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        /*
+        This line calculates the robot angle from where? From the analog stick.
+        we have minus Math.PI/4 to calculate an offset.  (as long as you know what an offset is its cool) -Robtavious
+         */
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
+
+        double rotation = gamepad1.right_stick_x;
+
+
+    }
+
 
 
 
