@@ -29,13 +29,21 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.drawable.GradientDrawable;
+
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.OrientationSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
  * Original FTC opmode header block
@@ -74,12 +82,25 @@ public class MainParentOpMode extends LinearOpMode {
 
     private Servo gripperServo = null;
 
-    //private CRServo intakeServo = null;
-    //private Servo shooterFlipper = null;
+
+
+    // gyro stuff
+    private ModernRoboticsI2cRangeSensor gyroSensor = null;
+
+    BNO055IMU gyroSensorInterface;
+    OrientationSensor gyroAngle;
+
+    // private CRServo intakeServo = null;
+    // private Servo shooterFlipper = null;
+
+
 
     // Global Variables/Constants
-    double liftPower = 0.6;
+    double liftPower = 0.7;
     double servoGripPosition = 0.7;
+
+
+
 
 
 
@@ -96,8 +117,10 @@ public class MainParentOpMode extends LinearOpMode {
 
         gripperServo = hardwareMap.get(Servo.class, "gripper_servo");
 
-        //intakeServo = hardwareMap.get(CRServo.class, "intake_servo");
-        //shooterFlipper = hardwareMap.get(Servo.class,"shooterFlipper_servo");
+        gyroSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class ,"gyro_sensor");
+
+        gyroSensor.initialize();
+
 
         //Set motor run mode (if using SPARK Mini motor controllers)
 
@@ -108,10 +131,10 @@ public class MainParentOpMode extends LinearOpMode {
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
 
+
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //gripperServo.setDirection(Servo.Direction.FORWARD);
-
 
         //Set range for special Servos
         //wobbleLift.scaleRange(0.15,.85); //Savox PWM range is between 0.8 and 2.2 ms. REV Hub puts out 0.5-2.5ms.
@@ -238,11 +261,11 @@ public class MainParentOpMode extends LinearOpMode {
         double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
 
         double rotation = gamepad1.right_stick_x;
-
-
+/*TODO 1.add in the math for each motor to drive
+    2. add the set power function for each of the motors
+    3. eventually add field centric to previous functions
+ */
     }
-
-
 
 
     /*****************************/
