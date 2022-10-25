@@ -37,13 +37,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.OrientationSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import java.util.Locale;
 
 /**
  * Original FTC opmode header block
@@ -248,22 +254,42 @@ public class MainParentOpMode extends LinearOpMode {
         tankDriving(0,0);
     }
 
+    public double getAngle() {
+   Orientation Angles = gyroSensorInterface.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+   double heading = Angles.firstAngle;
+   return heading;
+    }
+
+    public String formatAngle(BNO055IMU.AngleUnit angleUnit, double angle){
+        return formatDegrees(BNO055IMU.AngleUnit.DEGREES.toAngleUnit(angleUnit, angle));
+        //TODO fix later lol
+    }
+
+    public String formatDegrees(double degrees){
+        return String.format(Locale.getDefault(), "%.1f",AngleUnit.DEGREES.normalize(degrees));
+    }
+
     public void holonomic_drive() {
         /*
         So information wise this little funny overrated totally cool variable shows us our left stick movement
         by using the hypotenuse function
          */
         double LeftStickMovement = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double currentAngle = Math.toRadians(getAngle());
         /*
         This line calculates the robot angle from where? From the analog stick.
         we have minus Math.PI/4 to calculate an offset.  (as long as you know what an offset is its cool) -Robtavious
          */
         double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
+        double robotFieldAngle = robotAngle - currentAngle;
+
 
         double rotation = gamepad1.right_stick_x;
-/*TODO 1.add in the math for each motor to drive
-    2. add the set power function for each of the motors
-    3. eventually add field centric to previous functions
+/*TODO
+   1.add in the math for each motor to drive
+   2. add the set power function for each of the motors
+   3. eventually add field centric to previous functions
+
  */
     }
 
