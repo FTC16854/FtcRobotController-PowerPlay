@@ -89,12 +89,11 @@ public class MainParentOpMode extends LinearOpMode {
     private Servo gripperServo = null;
 
 
-
     // gyro stuff
-    private ModernRoboticsI2cRangeSensor gyroSensor = null;
+   // private ModernRoboticsI2cRangeSensor gyroSensor = null;
 
     BNO055IMU gyroSensorInterface;
-    OrientationSensor gyroAngle;
+    Orientation angles = new Orientation();
 
     // private CRServo intakeServo = null;
     // private Servo shooterFlipper = null;
@@ -123,9 +122,7 @@ public class MainParentOpMode extends LinearOpMode {
 
         gripperServo = hardwareMap.get(Servo.class, "gripper_servo");
 
-        gyroSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class ,"gyro_sensor");
 
-        gyroSensor.initialize();
 
 
         //Set motor run mode (if using SPARK Mini motor controllers)
@@ -260,11 +257,6 @@ public class MainParentOpMode extends LinearOpMode {
    return heading;
     }
 
-    public String formatAngle(BNO055IMU.AngleUnit angleUnit, double angle){
-        return formatDegrees(BNO055IMU.AngleUnit.DEGREES.toAngleUnit(angleUnit, angle));
-        //TODO fix later lol
-    }
-
     public String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f",AngleUnit.DEGREES.normalize(degrees));
     }
@@ -292,6 +284,34 @@ public class MainParentOpMode extends LinearOpMode {
 
  */
     }
+
+    public void FeildcentricDrive(){
+        double motorspeedRF;
+        double motorspeedRB;
+        double motorspeedLF;
+        double motorspeedLB;
+
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
+
+        double robotSpeed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+
+        double rotation = gamepad1.right_stick_x;
+
+        motorspeedRF = (robotSpeed*Math.sin(robotAngle+Math.PI/4)) - rotation;
+        motorspeedRB = (robotSpeed*Math.cos(robotAngle+Math.PI/4)) - rotation;
+        motorspeedLF = (robotSpeed*Math.cos(robotAngle+Math.PI/4)) + rotation;
+        motorspeedLB = (robotSpeed*Math.sin(robotAngle+Math.PI/4)) + rotation;
+
+        leftFront.setPower(motorspeedLF);
+        leftBack.setPower(motorspeedLB);
+        rightBack.setPower(motorspeedRB);
+        rightFront.setPower(motorspeedRF);
+
+    }
+    public void Amongus(){
+
+    }
+
 
 
     /*****************************/
@@ -327,8 +347,6 @@ public void GripperOut(){
     */
 
     /*****************************/
-    //Gyro Functions
-
 
 
 }

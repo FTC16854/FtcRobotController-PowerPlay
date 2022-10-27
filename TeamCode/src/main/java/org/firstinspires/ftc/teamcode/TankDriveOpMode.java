@@ -56,7 +56,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Parent Opmode Example", group="Linear Opmode")
 @Disabled
-public class TankDriveCommand extends MainParentOpMode {
+public class TankDriveOpMode extends MainParentOpMode {
 
 
     @Override
