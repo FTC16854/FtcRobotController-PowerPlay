@@ -261,29 +261,6 @@ public class MainParentOpMode extends LinearOpMode {
         return String.format(Locale.getDefault(), "%.1f",AngleUnit.DEGREES.normalize(degrees));
     }
 
-    public void holonomic_drive() {
-        /*
-        So information wise this little funny overrated totally cool variable shows us our left stick movement
-        by using the hypotenuse function
-         */
-        double LeftStickMovement = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
-        double currentAngle = Math.toRadians(getAngle());
-        /*
-        This line calculates the robot angle from where? From the analog stick.
-        we have minus Math.PI/4 to calculate an offset.  (as long as you know what an offset is its cool) -Robtavious
-         */
-        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
-        double robotFieldAngle = robotAngle - currentAngle;
-
-
-        double rotation = gamepad1.right_stick_x;
-/*TODO
-   1.add in the math for each motor to drive
-   2. add the set power function for each of the motors
-   3. eventually add field centric to previous functions
-
- */
-    }
 
     public void FeildcentricDrive(){
         double motorspeedRF;
