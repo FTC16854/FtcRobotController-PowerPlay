@@ -291,16 +291,18 @@ public class MainParentOpMode extends LinearOpMode {
         double motorspeedLF;
         double motorspeedLB;
 
-        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-Math.PI/4;
+        double PIOFFSET = Math.PI/4;
+
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-PIOFFSET;
 
         double robotSpeed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
         double rotation = gamepad1.right_stick_x;
 
-        motorspeedRF = (robotSpeed*Math.sin(robotAngle+Math.PI/4)) - rotation;
-        motorspeedRB = (robotSpeed*Math.cos(robotAngle+Math.PI/4)) - rotation;
-        motorspeedLF = (robotSpeed*Math.cos(robotAngle+Math.PI/4)) + rotation;
-        motorspeedLB = (robotSpeed*Math.sin(robotAngle+Math.PI/4)) + rotation;
+        motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
+        motorspeedRB = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) - rotation;
+        motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
+        motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
 
         leftFront.setPower(motorspeedLF);
         leftBack.setPower(motorspeedLB);
@@ -308,6 +310,15 @@ public class MainParentOpMode extends LinearOpMode {
         rightFront.setPower(motorspeedRF);
 
     }
+
+    /*TODO
+       1.Gyro Initialize Function
+       2. Reset Gyro Function
+
+
+
+    */
+
     public void Amongus(){
 
     }
