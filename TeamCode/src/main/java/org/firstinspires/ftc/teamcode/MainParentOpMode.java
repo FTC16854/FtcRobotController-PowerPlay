@@ -219,6 +219,8 @@ public class MainParentOpMode extends LinearOpMode {
     private boolean a_button(){return gamepad1.a;}
     private boolean x_button(){return gamepad1.x;}
 
+    public boolean resetGyroButton(){return (a_button()&& b_button());}
+
 
 
     /**
@@ -286,15 +288,53 @@ public class MainParentOpMode extends LinearOpMode {
         rightBack.setPower(motorspeedRB);
         rightFront.setPower(motorspeedRF);
 
+        if (resetGyroButton()){
+            gyroInitialize();
+        }
+
     }
 
-    /*TODO
-       1.Gyro Initialize Function
-       2. Reset Gyro Function
+    public void gyroInitialize(){
+        gyroSensorInterface.getParameters();
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        // TEST LATER YOU parameters.mode = BNO055IMU.SensorMode.GYRONLY;
+
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
+
+        gyroSensorInterface = hardwareMap.get(BNO055IMU.class, "gyro_sensor_interface");
+        gyroSensorInterface.initialize(parameters);
 
 
+        while(!isStopRequested() && !gyroSensorInterface.isGyroCalibrated()){
+            sleep(500);
+            idle();
+        }
+    }
 
-    */
+/*
+TODO
+    1. Auto Park In Terminal Function
+     a. move to the right - make function
+    2. Auto substation park
+     a. move left - make function
+    3. Auto Low Junction
+       a. move left til junction - make function
+       b. lift up - make
+       c. move forward - make
+       d. lift down - make
+       e. drop cone - make
+       f. lift up
+       g. back up - make function
+       h. lift down
+       i. Park In Terminal
+       1203618
+ */
+
+
 
     public void Amongus(){
 
