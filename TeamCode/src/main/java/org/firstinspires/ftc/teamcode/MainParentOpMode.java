@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.System.currentTimeMillis;
+
 import android.graphics.drawable.GradientDrawable;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
@@ -41,6 +43,8 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.OrientationSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+
+
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
@@ -294,6 +298,7 @@ public class MainParentOpMode extends LinearOpMode {
 
     }
 
+
     public void gyroInitialize(){
         gyroSensorInterface.getParameters();
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -336,15 +341,14 @@ TODO
 
 
 
-    public void Amongus(){
-
-    }
-
-
 
     /*****************************/
     //More Methods (Functions)
-//TODO add if statement for if button is pressed
+/*TODO
+   add if statement for if button is pressed
+   add goToPosition
+   add homing routine
+ */
     //LIFT METHODS
 public void liftUp(){
     liftMotor.setPower(liftPower);
@@ -365,6 +369,74 @@ public void GripperOut(){
 
     /*****************************/
     //Autonomous Functions
+
+    public void AUTO_SlideToTheRight(double robotAngle, double robotSpeed, double rotation) {
+        double motorspeedRF;
+        double motorspeedRB;
+        double motorspeedLF;
+        double motorspeedLB;
+
+        double PIOFFSET = Math.PI / 4;
+
+        if(currentTimeMillis() <= 500) {
+            robotAngle = Math.atan2(0, 1) - PIOFFSET;
+
+            robotSpeed = Math.hypot(1, 0);
+
+            rotation = 0;
+
+            motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
+            motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
+            motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
+            motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+
+            leftFront.setPower(motorspeedLF);
+            leftBack.setPower(motorspeedLB);
+            rightBack.setPower(motorspeedRB);
+            rightFront.setPower(motorspeedRF);
+        }
+        if (resetGyroButton()) {
+            gyroInitialize();
+
+        }
+    }
+
+        public void AUTO_SlideToTheLeft(double robotAngle, double robotSpeed, double rotation){
+            double motorspeedRF;
+            double motorspeedRB;
+            double motorspeedLF;
+            double motorspeedLB;
+
+            double PIOFFSET = Math.PI/4;
+
+            // if you are reading this Robert Sharp is hungry at the time of making this his has not had his 6 inch subway sandwich
+            //the if statement tells the root how long to wait before time is up
+            if (currentTimeMillis() <= 500) {
+
+
+                robotAngle = Math.atan2(0, -1) - PIOFFSET;
+
+                robotSpeed = Math.hypot(-1, 0);
+
+                rotation = 0;
+
+                motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
+                motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
+                motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
+                motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+
+                leftFront.setPower(motorspeedLF);
+                leftBack.setPower(motorspeedLB);
+                rightBack.setPower(motorspeedRB);
+                rightFront.setPower(motorspeedRF);
+            }
+
+            if (resetGyroButton()){
+                gyroInitialize();
+            }
+        }
+
+
 
     /*****************************/
     //Encoder Functions
