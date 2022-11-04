@@ -1,0 +1,29 @@
+Motor Ports                    Configuration Names
+    0
+    1
+    2
+    3
+
+Servo Ports
+    0
+    1
+    2
+    3
+    4
+    5
+
+I2C Ports
+    Bus 1
+    Bus 2
+    Bus 3
+
+
+
+    private DcMotor rightFront = null;
+    private DcMotor rightBack = null;
+    private DcMotor leftFront = null;
+    private DcMotor leftBack = null;
+
+    private DcMotor liftMotor = null;
+
+    private Servo gripperServo = null;
