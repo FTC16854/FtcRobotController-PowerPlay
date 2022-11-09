@@ -108,6 +108,11 @@ public class MainParentOpMode extends LinearOpMode {
     double liftPower = 0.7;
     double servoGripPosition = 0.7;
 
+    int pos0= 0;
+    int pos1= 55;
+    int pos2= 69;
+    int pos3= 420;
+
 
 
 
@@ -140,6 +145,9 @@ public class MainParentOpMode extends LinearOpMode {
 
 
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
         //gripperServo.setDirection(Servo.Direction.FORWARD);
 
@@ -155,6 +163,7 @@ public class MainParentOpMode extends LinearOpMode {
         //Update Driver Station Status Message after init
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
+        telemetry.addData("current lift position", liftMotor.getCurrentPosition());
     }
 
 
@@ -218,6 +227,8 @@ public class MainParentOpMode extends LinearOpMode {
     // Rename these based on function
     private boolean right_bumper(){return gamepad1.right_bumper;}
     private boolean left_bumper(){return gamepad1.left_bumper;}
+    private float right_trigger(){return gamepad1.right_trigger;}
+    private float left_trigger(){return gamepad1.left_trigger;}
     private boolean b_button(){return gamepad1.b;}
     private boolean y_button(){return gamepad1.y;}
     private boolean a_button(){return gamepad1.a;}
@@ -322,20 +333,17 @@ public class MainParentOpMode extends LinearOpMode {
 
 /*
 TODO
-    1. Auto Park In Terminal Function
-     a. move to the right - make function
-    2. Auto substation park
-     a. move left - make function
     3. Auto Low Junction
-       a. move left til junction - make function
-       b. lift up - make
-       c. move forward - make
-       d. lift down - make
-       e. drop cone - make
+       a. move left til junction
+       b. lift up
+       c. move forward
+       d. lift down
+       e. drop cone
        f. lift up
-       g. back up - make function
+       g. back up
        h. lift down
        i. Park In Terminal
+
        1203618
  */
 
@@ -344,28 +352,60 @@ TODO
 
     /*****************************/
     //More Methods (Functions)
-/*TODO
-   add if statement for if button is pressed
-   add goToPosition
-   add homing routine
- */
+
     //LIFT METHODS
-public void liftUp(){
+public void liftDown(){ if (right_trigger()==1){
+    liftMotor.setPower(-liftPower);
+
+}
+}
+
+public void liftUp(){ if (right_bumper()==true) {
     liftMotor.setPower(liftPower);
 }
-
-public void liftDown(){
-    liftMotor.setPower(-liftPower);
 }
 
-public void GripperIn(){
-    gripperServo.setPosition(servoGripPosition);
+public void GoToPostionUp(){ if (liftMotor.getCurrentPosition()==pos0) {
+    liftMotor.setTargetPosition(pos1);
+}
+    if (liftMotor.getCurrentPosition()==pos1) {
+        liftMotor.setTargetPosition(pos2);
+    }
+    if (liftMotor.getCurrentPosition()==pos2) {
+        liftMotor.setTargetPosition(pos3);
+    }
+    if (liftMotor.getCurrentPosition()==pos3){
+        liftMotor.setPower(0);
+    }
 }
 
-public void GripperOut(){
-    gripperServo.setPosition(0);
-}
+    public void GoToPostionDown(){ if (liftMotor.getCurrentPosition()==pos3) {
+        liftMotor.setTargetPosition(pos2);
+    }
+        if (liftMotor.getCurrentPosition()==pos2) {
+            liftMotor.setTargetPosition(pos1);
+        }
+        if (liftMotor.getCurrentPosition()==pos1) {
+            liftMotor.setTargetPosition(pos0);
+        }
+        if (liftMotor.getCurrentPosition()==pos0){
+            liftMotor.setPower(0);
+        }
+    }
 
+
+//Gripper Methods
+
+public void GripperIn() {
+    if (left_trigger() == 1) {
+        gripperServo.setPosition(servoGripPosition);
+
+    }
+}
+public void GripperOut() {if (left_bumper() == true) {
+        gripperServo.setPosition(0);
+    }
+}
 
     /*****************************/
     //Autonomous Functions
@@ -436,9 +476,96 @@ public void GripperOut(){
             }
         }
 
+        public void TrudgeForward(double robotAngle, double robotSpeed, double rotation) {
+            double motorspeedRF;
+            double motorspeedRB;
+            double motorspeedLF;
+            double motorspeedLB;
+
+            double PIOFFSET = Math.PI / 4;
+
+            robotAngle = Math.atan2(1, 0) - PIOFFSET;
+
+            robotSpeed = Math.hypot(0, -1);
+
+            rotation = 0;
+
+            if (currentTimeMillis() <= 500) {
 
 
-    /*****************************/
+                motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
+                motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
+                motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
+                motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+
+                leftFront.setPower(motorspeedLF);
+                leftBack.setPower(motorspeedLB);
+                rightBack.setPower(motorspeedRB);
+                rightFront.setPower(motorspeedRF);
+            }
+            if (resetGyroButton()) {
+                gyroInitialize();
+            }
+        }
+
+            public void TrudgeBackwords(double robotAngle, double robotSpeed, double rotation){
+                double motorspeedRF;
+                double motorspeedRB;
+                double motorspeedLF;
+                double motorspeedLB;
+
+               double PIOFFSET = Math.PI/4;
+
+                robotAngle= Math.atan2(-1,0)-PIOFFSET;
+
+                robotSpeed = Math.hypot(0, 1);
+
+                 rotation = 0;
+
+                if (currentTimeMillis()<=500) {
+
+
+                    motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
+                    motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
+                    motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
+                    motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+
+                    leftFront.setPower(motorspeedLF);
+                    leftBack.setPower(motorspeedLB);
+                    rightBack.setPower(motorspeedRB);
+                    rightFront.setPower(motorspeedRF);
+                }
+                if (resetGyroButton()){
+                    gyroInitialize();
+                }
+            }
+
+            public void AUTO_lifttolowterminal(){
+                liftMotor.setTargetPosition(pos1);
+            }
+
+            public void AUTO_liftToGround(){
+                liftMotor.setTargetPosition(pos0);
+            }
+
+            public void AUTO_liftToMIdTerminal(){
+        liftMotor.setTargetPosition(pos2);
+            }
+public void Auto_liftToHighTerminal(){
+        liftMotor.setTargetPosition(pos3);
+}
+
+public void AUTO_gripperClose(){
+        gripperServo.setPosition(servoGripPosition);
+}
+public void AUTO_gripperOpen(){
+        gripperServo.setPosition(0);
+}
+
+
+
+
+                /*****************************/
     //Encoder Functions
    /*
     public double getLeftVerticalEncoder(){
