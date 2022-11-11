@@ -76,7 +76,7 @@ import java.util.Locale;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@TeleOp(name="Parent Opmode Example", group="Linear Opmode")
+@TeleOp(name="Parent Opmode", group="Linear Opmode")
 @Disabled
 public class MainParentOpMode extends LinearOpMode {
 
@@ -88,7 +88,7 @@ public class MainParentOpMode extends LinearOpMode {
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
 
-    private DcMotor liftMotor = null;
+    private DcMotorSimple liftMotor = null;
 
     private Servo gripperServo = null;
 
@@ -127,7 +127,7 @@ public class MainParentOpMode extends LinearOpMode {
         leftBack = hardwareMap.get(DcMotor.class, "lb_drive");
         rightBack = hardwareMap.get(DcMotor.class, "rb_drive");
 
-        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor");
+        liftMotor = hardwareMap.get(DcMotorSimple.class, "lift_motor");
 
         gripperServo = hardwareMap.get(Servo.class, "gripper_servo");
 
@@ -145,7 +145,7 @@ public class MainParentOpMode extends LinearOpMode {
 
 
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -163,7 +163,7 @@ public class MainParentOpMode extends LinearOpMode {
         //Update Driver Station Status Message after init
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
-        telemetry.addData("current lift position", liftMotor.getCurrentPosition());
+       // telemetry.addData("current lift position", liftMotor.getCurrentPosition());
     }
 
 
@@ -364,7 +364,7 @@ public void liftUp(){ if (right_bumper()==true) {
     liftMotor.setPower(liftPower);
 }
 }
-
+/*
 public void GoToPostionUp(){ if (liftMotor.getCurrentPosition()==pos0) {
     liftMotor.setTargetPosition(pos1);
 }
@@ -392,7 +392,7 @@ public void GoToPostionUp(){ if (liftMotor.getCurrentPosition()==pos0) {
             liftMotor.setPower(0);
         }
     }
-
+*/
 
 //Gripper Methods
 
@@ -539,7 +539,7 @@ public void GripperOut() {if (left_bumper() == true) {
                     gyroInitialize();
                 }
             }
-
+/*
             public void AUTO_lifttolowterminal(){
                 liftMotor.setTargetPosition(pos1);
             }
@@ -561,7 +561,7 @@ public void AUTO_gripperClose(){
 public void AUTO_gripperOpen(){
         gripperServo.setPosition(0);
 }
-
+*/
 
 
 

@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,8 +55,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@TeleOp(name="Parent Opmode Example", group="Linear Opmode")
-@Disabled
+@Autonomous(name="AUTOOPMODE", group="Linear Opmode")
+//@Disabled
 public class AUTO_TerminalParkOpMode extends MainParentOpMode {
 
 

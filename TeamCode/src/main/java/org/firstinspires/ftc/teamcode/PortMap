@@ -19,11 +19,3 @@ I2C Ports
 
 
 
-    private DcMotor rightFront = null;
-    private DcMotor rightBack = null;
-    private DcMotor leftFront = null;
-    private DcMotor leftBack = null;
-
-    private DcMotor liftMotor = null;
-
-    private Servo gripperServo = null;
