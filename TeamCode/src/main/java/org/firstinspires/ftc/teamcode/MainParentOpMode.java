@@ -279,24 +279,56 @@ public class MainParentOpMode extends LinearOpMode {
     }
 
 
-    public void FeildcentricDrive(){
+    public void HolonomicDrive(){
         double motorspeedRF;
         double motorspeedRB;
         double motorspeedLF;
         double motorspeedLB;
 
-        double PIOFFSET = Math.PI/4;
+        double PIOFFSET = Math.PI/4; //45 degrees
 
-        double robotAngle= Math.atan2(gamepad1.left_stick_y,gamepad1.left_stick_x)-PIOFFSET;
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,-gamepad1.left_stick_x)-Math.PI/2;
 
-        double robotSpeed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotSpeed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
-        double rotation = gamepad1.right_stick_x;
+        double rotation = -gamepad1.right_stick_x;
 
-        motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
-        motorspeedRB = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) - rotation;
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
         motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRB = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) - rotation;
+
+        leftFront.setPower(motorspeedLF);
+        leftBack.setPower(motorspeedLB);
+        rightBack.setPower(motorspeedRB);
+        rightFront.setPower(motorspeedRF);
+/*
+        if (resetGyroButton()){
+            gyroInitialize();
+        }
+        */
+
+
+    }
+
+    public void FieldCentricDrive(){
+        double motorspeedRF;
+        double motorspeedRB;
+        double motorspeedLF;
+        double motorspeedLB;
+
+        double PIOFFSET = Math.PI/4; //45 degrees
+
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,-gamepad1.left_stick_x)-(Math.PI/2)-(getAngle());
+
+        double robotSpeed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+
+        double rotation = -gamepad1.right_stick_x;
+
+        motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
+        motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRB = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) - rotation;
 
         leftFront.setPower(motorspeedLF);
         leftBack.setPower(motorspeedLB);
@@ -306,6 +338,8 @@ public class MainParentOpMode extends LinearOpMode {
         if (resetGyroButton()){
             gyroInitialize();
         }
+
+
 
     }
 
@@ -364,35 +398,15 @@ public void liftUp(){ if (right_bumper()==true) {
     liftMotor.setPower(liftPower);
 }
 }
-/*
-public void GoToPostionUp(){ if (liftMotor.getCurrentPosition()==pos0) {
-    liftMotor.setTargetPosition(pos1);
-}
-    if (liftMotor.getCurrentPosition()==pos1) {
-        liftMotor.setTargetPosition(pos2);
-    }
-    if (liftMotor.getCurrentPosition()==pos2) {
-        liftMotor.setTargetPosition(pos3);
-    }
-    if (liftMotor.getCurrentPosition()==pos3){
-        liftMotor.setPower(0);
-    }
+
+public int GetLiftPosition(){
+    return rightBack.getCurrentPosition();
 }
 
-    public void GoToPostionDown(){ if (liftMotor.getCurrentPosition()==pos3) {
-        liftMotor.setTargetPosition(pos2);
-    }
-        if (liftMotor.getCurrentPosition()==pos2) {
-            liftMotor.setTargetPosition(pos1);
-        }
-        if (liftMotor.getCurrentPosition()==pos1) {
-            liftMotor.setTargetPosition(pos0);
-        }
-        if (liftMotor.getCurrentPosition()==pos0){
-            liftMotor.setPower(0);
-        }
-    }
-*/
+public void GoToPostionUp(){ if (GetLiftPosition()<=pos1) {
+    liftMotor.setPower(liftPower);
+}
+
 
 //Gripper Methods
 
