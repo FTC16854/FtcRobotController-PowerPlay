@@ -403,10 +403,42 @@ public int GetLiftPosition(){
     return rightBack.getCurrentPosition();
 }
 
-public void GoToPostionUp(){ if (GetLiftPosition()<=pos1) {
-    liftMotor.setPower(liftPower);
+public void GoToPositionUp(){
+    if(GetLiftPosition()<=pos1){
+        liftMotor.setPower(liftPower);
+    }
+
 }
 
+/*
+public void GoToPostionUp(){ if (GetLiftPosition()==pos0) {
+
+}
+    if (liftMotor.getCurrentPosition()==pos1) {
+        liftMotor.setTargetPosition(pos2);
+    }
+    if (liftMotor.getCurrentPosition()==pos2) {
+        liftMotor.setTargetPosition(pos3);
+    }
+    if (liftMotor.getCurrentPosition()==pos3){
+        liftMotor.setPower(0);
+    }
+}
+
+    public void GoToPostionDown(){ if (liftMotor.getCurrentPosition()==pos3) {
+        liftMotor.setTargetPosition(pos2);
+    }
+        if (liftMotor.getCurrentPosition()==pos2) {
+            liftMotor.setTargetPosition(pos1);
+        }
+        if (liftMotor.getCurrentPosition()==pos1) {
+            liftMotor.setTargetPosition(pos0);
+        }
+        if (liftMotor.getCurrentPosition()==pos0){
+            liftMotor.setPower(0);
+        }
+    }
+*/
 
 //Gripper Methods
 
