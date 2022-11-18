@@ -108,10 +108,11 @@ public class MainParentOpMode extends LinearOpMode {
     double liftPower = 0.7;
     double servoGripPosition = 0.7;
 
-    int pos0= 0;
-    int pos1= 55;
-    int pos2= 69;
-    int pos3= 420;
+    // Lift Positions
+    int pos1= 0;    //Bottom
+    int pos2= 55;
+    int pos3= 69;
+    int pos4= 420;  //Top
 
 
 
@@ -234,7 +235,16 @@ public class MainParentOpMode extends LinearOpMode {
     private boolean a_button(){return gamepad1.a;}
     private boolean x_button(){return gamepad1.x;}
 
+
+    private boolean liftDown_button(){return gamepad2.right_bumper;}
+    private float liftUp_button(){return gamepad2.right_trigger;}
+    private boolean pos1_button(){return gamepad2.a;}
+    private boolean pos2_button(){return gamepad2.x;}
+    private boolean pos3_button(){return gamepad2.b;}
+    private boolean pos4_button(){return gamepad2.y;}
+
     public boolean resetGyroButton(){return (a_button()&& b_button());}
+
 
 
 
@@ -388,27 +398,74 @@ TODO
     //More Methods (Functions)
 
     //LIFT METHODS
-public void liftDown(){ if (right_trigger()==1){
-    liftMotor.setPower(-liftPower);
 
-}
-}
+    public void liftdown() {
+        if (liftDown_button() == true) {
+            liftMotor.setPower(-liftPower);
+        }
+    }
 
-public void liftUp(){ if (right_bumper()==true) {
-    liftMotor.setPower(liftPower);
-}
-}
+    public void liftUp(){
+        if (liftUp_button() >= 0.5){
+            liftMotor.setPower(liftPower);
+        }
+
+    }
 
 public int GetLiftPosition(){
     return rightBack.getCurrentPosition();
 }
 
-public void GoToPositionUp(){
-    if(GetLiftPosition()<=pos1){
+public void GoToPositionUp(int targetsGotDeals){
+    if (GetLiftPosition()  <= targetsGotDeals){
         liftMotor.setPower(liftPower);
     }
-
 }
+
+public void GoToPositionDown(int targetsgotdeals){
+    if (GetLiftPosition() >= targetsgotdeals){
+        liftMotor.setPower(-liftPower*.5);
+    }
+}
+
+//TODO
+// Add funtionality to stop lift when no button is pressed
+// Add "dead zone" so lift does not bounce back and forth
+
+    public void goToPos1(){
+        if (pos1_button() == true) {
+            GoToPositionDown(pos1);
+        }
+    }
+
+    public void goToPos2(){
+        if (pos2_button() == true){
+            if (GetLiftPosition() <= pos2) {
+                GoToPositionUp(pos2);
+            }
+            if (GetLiftPosition() >= pos2){
+                GoToPositionDown(pos2);
+            }
+        }
+    }
+
+    public void goToPos3(){
+        if (pos3_button() == true){
+            if (GetLiftPosition() <=pos3) {
+                GoToPositionUp(pos3);
+            }
+            if (GetLiftPosition() >=pos3){
+                GoToPositionDown(pos3);
+            }
+        }
+    }
+
+    public void goToPos4(){
+        if (pos4_button() == true){
+            GoToPositionUp(pos4);
+        }
+    }
+
 
 /*
 public void GoToPostionUp(){ if (GetLiftPosition()==pos0) {
