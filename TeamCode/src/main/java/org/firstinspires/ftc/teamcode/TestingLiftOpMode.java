@@ -89,7 +89,11 @@ public class TestingLiftOpMode extends ParentOpModeTesting {
                 liftMotor.setPower(-gamepad1.left_stick_y);
             }
 
+            //---//
             set_destination_WithButtons();
+            goToPosition(lift_destination);
+            //---//
+
             //goToButtonPositionWhileHeld();
 
             //checkEmergencyStop();
