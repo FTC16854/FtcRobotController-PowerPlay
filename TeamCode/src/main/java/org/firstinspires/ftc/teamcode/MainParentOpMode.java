@@ -106,6 +106,7 @@ public class MainParentOpMode extends LinearOpMode {
 
     // Global Variables/Constants
     double liftPower = 0.7;
+    double liftStop = 0;
     double servoGripPosition = 0.7;
 
     // Lift Positions
@@ -145,7 +146,7 @@ public class MainParentOpMode extends LinearOpMode {
         leftBack.setDirection(DcMotor.Direction.FORWARD);
 
 
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
         //liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -399,16 +400,36 @@ TODO
 
     //LIFT METHODS
 
-    public void liftdown() {
+    public void stopLift(){
+        liftMotor.setPower(liftStop);
+    }
+
+    public void liftMove() {
         if (liftDown_button() == true) {
             liftMotor.setPower(-liftPower);
+            telemetry.addData("going down :0", "");
+        } else if (liftUp_button() >= 0.5){
+            liftMotor.setPower(liftPower);
+            telemetry.addData("going up :0", "");
         }
+        else{
+            stopLift();
+        }
+
+        /*
+        else {
+            stopLift();
+        }*/
     }
 
     public void liftUp(){
         if (liftUp_button() >= 0.5){
             liftMotor.setPower(liftPower);
-        }
+            telemetry.addData("going up :0", "");
+        }/*
+        else {
+            stopLift();
+        }*/
 
     }
 
@@ -428,34 +449,69 @@ public void GoToPositionDown(int targetsgotdeals){
     }
 }
 
-//TODO
-// Add funtionality to stop lift when no button is pressed
-// Add "dead zone" so lift does not bounce back and forth
 
-    public void goToPos1(){
+
+
+    public void goToPos(){
         if (pos1_button() == true) {
             GoToPositionDown(pos1);
+        }
+        else {
+            if (pos2_button() == true){
+                if (GetLiftPosition() <= pos2-10) {
+                    GoToPositionUp(pos2);
+                }
+
+                if (GetLiftPosition() >= pos2+10){
+                    GoToPositionDown(pos2);
+                }
+                else {
+                    if (pos3_button() == true){
+                        if (GetLiftPosition() <=pos3-10) {
+                            GoToPositionUp(pos3);
+                        }
+                        if (GetLiftPosition() >=pos3+10){
+                            GoToPositionDown(pos3);
+                        }
+                        else {
+                            if (pos4_button() == true){
+                                GoToPositionUp(pos4);
+                            }
+                            else {
+                                stopLift();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     public void goToPos2(){
         if (pos2_button() == true){
-            if (GetLiftPosition() <= pos2) {
+            if (GetLiftPosition() <= pos2-10) {
                 GoToPositionUp(pos2);
             }
-            if (GetLiftPosition() >= pos2){
+
+            if (GetLiftPosition() >= pos2+10){
                 GoToPositionDown(pos2);
+            }
+            else {
+                stopLift();
             }
         }
     }
 
     public void goToPos3(){
         if (pos3_button() == true){
-            if (GetLiftPosition() <=pos3) {
+            if (GetLiftPosition() <=pos3-10) {
                 GoToPositionUp(pos3);
             }
-            if (GetLiftPosition() >=pos3){
+            if (GetLiftPosition() >=pos3+10){
                 GoToPositionDown(pos3);
+            }
+            else {
+                stopLift();
             }
         }
     }
@@ -464,38 +520,13 @@ public void GoToPositionDown(int targetsgotdeals){
         if (pos4_button() == true){
             GoToPositionUp(pos4);
         }
-    }
-
-
-/*
-public void GoToPostionUp(){ if (GetLiftPosition()==pos0) {
-
-}
-    if (liftMotor.getCurrentPosition()==pos1) {
-        liftMotor.setTargetPosition(pos2);
-    }
-    if (liftMotor.getCurrentPosition()==pos2) {
-        liftMotor.setTargetPosition(pos3);
-    }
-    if (liftMotor.getCurrentPosition()==pos3){
-        liftMotor.setPower(0);
-    }
-}
-
-    public void GoToPostionDown(){ if (liftMotor.getCurrentPosition()==pos3) {
-        liftMotor.setTargetPosition(pos2);
-    }
-        if (liftMotor.getCurrentPosition()==pos2) {
-            liftMotor.setTargetPosition(pos1);
-        }
-        if (liftMotor.getCurrentPosition()==pos1) {
-            liftMotor.setTargetPosition(pos0);
-        }
-        if (liftMotor.getCurrentPosition()==pos0){
-            liftMotor.setPower(0);
+        else {
+            stopLift();
         }
     }
-*/
+
+
+
 
 //Gripper Methods
 
@@ -522,11 +553,11 @@ public void GripperOut() {if (left_bumper() == true) {
         double PIOFFSET = Math.PI / 4;
 
         if(currentTimeMillis() <= 500) {
-            robotAngle = Math.atan2(0, 1) - PIOFFSET;
+           // robotAngle = Math.atan2(0, 1) - PIOFFSET;
 
-            robotSpeed = Math.hypot(1, 0);
+            // robotSpeed = Math.hypot(1, 0);
 
-            rotation = 0;
+            // rotation = 0;
 
             motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
             motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
@@ -557,11 +588,11 @@ public void GripperOut() {if (left_bumper() == true) {
             if (currentTimeMillis() <= 500) {
 
 
-                robotAngle = Math.atan2(0, -1) - PIOFFSET;
+               // robotAngle = Math.atan2(0, -1) - PIOFFSET;
 
-                robotSpeed = Math.hypot(-1, 0);
+                //robotSpeed = Math.hypot(-1, 0);
 
-                rotation = 0;
+                //rotation = 0;
 
                 motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
                 motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
@@ -587,11 +618,11 @@ public void GripperOut() {if (left_bumper() == true) {
 
             double PIOFFSET = Math.PI / 4;
 
-            robotAngle = Math.atan2(1, 0) - PIOFFSET;
+            //robotAngle = Math.atan2(1, 0) - PIOFFSET;
 
-            robotSpeed = Math.hypot(0, -1);
+            //robotSpeed = Math.hypot(0, -1);
 
-            rotation = 0;
+            //rotation = 0;
 
             if (currentTimeMillis() <= 500) {
 
@@ -619,11 +650,11 @@ public void GripperOut() {if (left_bumper() == true) {
 
                double PIOFFSET = Math.PI/4;
 
-                robotAngle= Math.atan2(-1,0)-PIOFFSET;
+                //robotAngle= Math.atan2(-1,0)-PIOFFSET;
 
-                robotSpeed = Math.hypot(0, 1);
+                //robotSpeed = Math.hypot(0, 1);
 
-                 rotation = 0;
+                // rotation = 0;
 
                 if (currentTimeMillis()<=500) {
 
@@ -642,21 +673,7 @@ public void GripperOut() {if (left_bumper() == true) {
                     gyroInitialize();
                 }
             }
-/*
-            public void AUTO_lifttolowterminal(){
-                liftMotor.setTargetPosition(pos1);
-            }
 
-            public void AUTO_liftToGround(){
-                liftMotor.setTargetPosition(pos0);
-            }
-
-            public void AUTO_liftToMIdTerminal(){
-        liftMotor.setTargetPosition(pos2);
-            }
-public void Auto_liftToHighTerminal(){
-        liftMotor.setTargetPosition(pos3);
-}
 
 public void AUTO_gripperClose(){
         gripperServo.setPosition(servoGripPosition);
@@ -664,7 +681,7 @@ public void AUTO_gripperClose(){
 public void AUTO_gripperOpen(){
         gripperServo.setPosition(0);
 }
-*/
+//public void AUTO_
 
 
 

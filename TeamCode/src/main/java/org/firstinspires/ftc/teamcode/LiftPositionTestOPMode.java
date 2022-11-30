@@ -53,9 +53,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@TeleOp(name="FeildCentric", group="Linear Opmode")
+@TeleOp(name="LiftPositionTestOPMode", group="Linear Opmode")
 //@Disabled
-public class FieldCentricOpMOde extends MainParentOpMode {
+public class LiftPositionTestOPMode extends MainParentOpMode {
 
 
     @Override
@@ -74,7 +74,7 @@ public class FieldCentricOpMOde extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            FieldCentricDrive();
+           goToPos();
 
 
             checkEmergencyStop();
