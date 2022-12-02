@@ -376,21 +376,7 @@ public class MainParentOpMode extends LinearOpMode {
         }
     }
 
-/*
-TODO
-    3. Auto Low Junction
-       a. move left til junction
-       b. lift up
-       c. move forward
-       d. lift down
-       e. drop cone
-       f. lift up
-       g. back up
-       h. lift down
-       i. Park In Terminal
 
-       1203618
- */
 
 
 
@@ -544,7 +530,7 @@ public void GripperOut() {if (left_bumper() == true) {
     /*****************************/
     //Autonomous Functions
 
-    public void AUTO_SlideToTheRight(double robotAngle, double robotSpeed, double rotation) {
+    public void AUTO_Drive(double robotAngle, double robotSpeed, double rotation, double millisecondTime) {
         double motorspeedRF;
         double motorspeedRB;
         double motorspeedLF;
@@ -552,12 +538,7 @@ public void GripperOut() {if (left_bumper() == true) {
 
         double PIOFFSET = Math.PI / 4;
 
-        if(currentTimeMillis() <= 500) {
-           // robotAngle = Math.atan2(0, 1) - PIOFFSET;
-
-            // robotSpeed = Math.hypot(1, 0);
-
-            // rotation = 0;
+        if(currentTimeMillis() <= millisecondTime) {
 
             motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
             motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
@@ -575,104 +556,6 @@ public void GripperOut() {if (left_bumper() == true) {
         }
     }
 
-        public void AUTO_SlideToTheLeft(double robotAngle, double robotSpeed, double rotation){
-            double motorspeedRF;
-            double motorspeedRB;
-            double motorspeedLF;
-            double motorspeedLB;
-
-            double PIOFFSET = Math.PI/4;
-
-            // if you are reading this Robert Sharp is hungry at the time of making this his has not had his 6 inch subway sandwich
-            //the if statement tells the root how long to wait before time is up
-            if (currentTimeMillis() <= 500) {
-
-
-               // robotAngle = Math.atan2(0, -1) - PIOFFSET;
-
-                //robotSpeed = Math.hypot(-1, 0);
-
-                //rotation = 0;
-
-                motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
-                motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
-                motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
-                motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
-
-                leftFront.setPower(motorspeedLF);
-                leftBack.setPower(motorspeedLB);
-                rightBack.setPower(motorspeedRB);
-                rightFront.setPower(motorspeedRF);
-            }
-
-            if (resetGyroButton()){
-                gyroInitialize();
-            }
-        }
-
-        public void TrudgeForward(double robotAngle, double robotSpeed, double rotation) {
-            double motorspeedRF;
-            double motorspeedRB;
-            double motorspeedLF;
-            double motorspeedLB;
-
-            double PIOFFSET = Math.PI / 4;
-
-            //robotAngle = Math.atan2(1, 0) - PIOFFSET;
-
-            //robotSpeed = Math.hypot(0, -1);
-
-            //rotation = 0;
-
-            if (currentTimeMillis() <= 500) {
-
-
-                motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
-                motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
-                motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
-                motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
-
-                leftFront.setPower(motorspeedLF);
-                leftBack.setPower(motorspeedLB);
-                rightBack.setPower(motorspeedRB);
-                rightFront.setPower(motorspeedRF);
-            }
-            if (resetGyroButton()) {
-                gyroInitialize();
-            }
-        }
-
-            public void TrudgeBackwords(double robotAngle, double robotSpeed, double rotation){
-                double motorspeedRF;
-                double motorspeedRB;
-                double motorspeedLF;
-                double motorspeedLB;
-
-               double PIOFFSET = Math.PI/4;
-
-                //robotAngle= Math.atan2(-1,0)-PIOFFSET;
-
-                //robotSpeed = Math.hypot(0, 1);
-
-                // rotation = 0;
-
-                if (currentTimeMillis()<=500) {
-
-
-                    motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
-                    motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
-                    motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
-                    motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
-
-                    leftFront.setPower(motorspeedLF);
-                    leftBack.setPower(motorspeedLB);
-                    rightBack.setPower(motorspeedRB);
-                    rightFront.setPower(motorspeedRF);
-                }
-                if (resetGyroButton()){
-                    gyroInitialize();
-                }
-            }
 
 
 public void AUTO_gripperClose(){
@@ -681,7 +564,25 @@ public void AUTO_gripperClose(){
 public void AUTO_gripperOpen(){
         gripperServo.setPosition(0);
 }
-//public void AUTO_
+
+public void AUTO_GoToPosition1(){
+        GoToPositionDown(pos1);
+}
+
+    public void AUTO_GoToPosition2(){
+        GoToPositionUp(pos2);
+    }
+
+    public void AUTO_GoToPosition3(){
+        GoToPositionUp(pos3);
+    }
+
+    public void AUTO_GoToPosition4(){
+        GoToPositionUp(pos4);
+    }
+
+
+
 
 
 

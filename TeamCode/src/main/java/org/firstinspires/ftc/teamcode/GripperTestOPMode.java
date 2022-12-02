@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
@@ -55,9 +53,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@Autonomous(name="AUTOOPMODE", group="Linear Opmode")
+@TeleOp(name="GripperTestOPMode", group="Linear Opmode")
 //@Disabled
-public class AUTO_TerminalParkOpMode extends MainParentOpMode {
+public class GripperTestOPMode extends MainParentOpMode {
 
 
     @Override
@@ -76,7 +74,11 @@ public class AUTO_TerminalParkOpMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            AUTO_Drive(180,1, 0, 500);
+
+           GripperIn();
+           GripperOut();
+
+
             checkEmergencyStop();
 
             telemetry.update();
