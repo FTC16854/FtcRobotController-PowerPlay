@@ -24,7 +24,9 @@ android {
 }
 
 apply from: '../build.dependencies.gradle'
-
+/*
 dependencies {
     implementation 'org.openftc:apriltag:6.1.1'
 }
+
+ */

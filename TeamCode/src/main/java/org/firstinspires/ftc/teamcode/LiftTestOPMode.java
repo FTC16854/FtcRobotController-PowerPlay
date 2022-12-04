@@ -74,8 +74,8 @@ public class LiftTestOPMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            liftMove();
+            telemetry.addData("position ",GetLiftPosition());
+            ManuelLiftMove();
 
             checkEmergencyStop();
 

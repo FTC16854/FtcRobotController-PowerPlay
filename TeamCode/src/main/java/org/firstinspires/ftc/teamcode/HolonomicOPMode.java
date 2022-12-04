@@ -64,7 +64,7 @@ public class HolonomicOPMode extends MainParentOpMode {
         initialize();
 
         // Init loop - optional
-        while(opModeInInit()){
+        while (opModeInInit()) {
             // Code in here will loop continuously until OpMode is started
         }
 
@@ -74,10 +74,15 @@ public class HolonomicOPMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            HolonomicDrive();
+            //HolonomicDrive();
+            GripperFunction();
+            //LiftMoveButtons();
+            ManuelLiftMove();
+            telemetry.addData("position ",GetLiftPosition());
+            telemetry.addData("atbottom ",LiftAtBottom());
+
 
             checkEmergencyStop();
-
             telemetry.update();
         }
     }

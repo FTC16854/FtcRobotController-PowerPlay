@@ -74,7 +74,7 @@ public class LiftPositionTestOPMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-           goToPos();
+           LiftMoveButtons();
 
 
             checkEmergencyStop();

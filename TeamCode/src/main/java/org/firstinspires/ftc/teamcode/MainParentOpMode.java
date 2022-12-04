@@ -31,16 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.System.currentTimeMillis;
 
-import android.graphics.drawable.GradientDrawable;
-
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.OrientationSensor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -92,6 +88,8 @@ public class MainParentOpMode extends LinearOpMode {
 
     private Servo gripperServo = null;
 
+    private DigitalChannel LimitSwitch = null;
+
 
     // gyro stuff
    // private ModernRoboticsI2cRangeSensor gyroSensor = null;
@@ -107,13 +105,13 @@ public class MainParentOpMode extends LinearOpMode {
     // Global Variables/Constants
     double liftPower = 0.7;
     double liftStop = 0;
-    double servoGripPosition = 0.7;
+    double servoGripPosition = 0.4;
 
     // Lift Positions
     int pos1= 0;    //Bottom
-    int pos2= 55;
-    int pos3= 69;
-    int pos4= 420;  //Top
+    int pos2= 3318;
+    int pos3= 5687;
+    int pos4= 7804;  //Top
 
 
 
@@ -133,6 +131,7 @@ public class MainParentOpMode extends LinearOpMode {
 
         gripperServo = hardwareMap.get(Servo.class, "gripper_servo");
 
+        LimitSwitch = hardwareMap.get(DigitalChannel.class, "lift_limit_switch");
 
 
 
@@ -228,9 +227,14 @@ public class MainParentOpMode extends LinearOpMode {
 
     // Rename these based on function
     private boolean right_bumper(){return gamepad1.right_bumper;}
-    private boolean left_bumper(){return gamepad1.left_bumper;}
+    private boolean GripCloseButton(){return gamepad1.left_bumper|| gamepad2.left_bumper;}
     private float right_trigger(){return gamepad1.right_trigger;}
-    private float left_trigger(){return gamepad1.left_trigger;}
+    private boolean GripOpenButton(){
+        if(gamepad1.left_trigger>.1||gamepad2.left_trigger>.1){
+            return true;}
+        else{
+            return  false;}
+    }
     private boolean b_button(){return gamepad1.b;}
     private boolean y_button(){return gamepad1.y;}
     private boolean a_button(){return gamepad1.a;}
@@ -390,7 +394,11 @@ public class MainParentOpMode extends LinearOpMode {
         liftMotor.setPower(liftStop);
     }
 
-    public void liftMove() {
+    public boolean LiftAtBottom(){
+        return LimitSwitch.getState();
+    }
+
+    public void ManuelLiftMove() {
         if (liftDown_button() == true) {
             liftMotor.setPower(-liftPower);
             telemetry.addData("going down :0", "");
@@ -420,25 +428,30 @@ public class MainParentOpMode extends LinearOpMode {
     }
 
 public int GetLiftPosition(){
-    return rightBack.getCurrentPosition();
+    return -rightBack.getCurrentPosition();
 }
 
 public void GoToPositionUp(int targetsGotDeals){
     if (GetLiftPosition()  <= targetsGotDeals){
         liftMotor.setPower(liftPower);
+        telemetry.addData("Up To ",targetsGotDeals);
+        telemetry.update();
     }
 }
 
-public void GoToPositionDown(int targetsgotdeals){
-    if (GetLiftPosition() >= targetsgotdeals){
+public void GoToPositionDown(int targetsGotDeals){
+    if (GetLiftPosition() >= targetsGotDeals){
         liftMotor.setPower(-liftPower*.5);
+        telemetry.addData("Down To ",targetsGotDeals);
+        telemetry.update();
     }
+
 }
 
 
 
 
-    public void goToPos(){
+    /*public void goToPos(){
         if (pos1_button() == true) {
             GoToPositionDown(pos1);
         }
@@ -472,6 +485,65 @@ public void GoToPositionDown(int targetsgotdeals){
             }
         }
     }
+*/
+
+    //Look into doing a different way with variable "flags"
+    // There does not seem to be a good way to avoid jumpy behavior and allow it to stop where it should
+    // as well as allowing manual up/down controls
+    // --Matt
+    public void LiftMoveButtons(){
+        if (pos1_button() == true) {
+            if(GetLiftPosition() > pos1+40){
+                GoToPositionDown(pos1);
+            }
+            else if (GetLiftPosition() < pos1-40){
+                GoToPositionUp(pos1);
+            }
+        }
+
+        else {
+            if (pos2_button() == true){
+                if (GetLiftPosition() <= pos2-10) {
+                    GoToPositionUp(pos2);
+                }
+
+                if (GetLiftPosition() >= pos2+10){
+                    GoToPositionDown(pos2);
+                }
+                else {
+                    if (pos3_button() == true){
+                        if (GetLiftPosition() <=pos3-10) {
+                            GoToPositionUp(pos3);
+                        }
+                        if (GetLiftPosition() >=pos3+10){
+                            GoToPositionDown(pos3);
+                        }
+                        else {
+                            if (pos4_button() == true){
+                                GoToPositionUp(pos4);
+                            }
+                            else {
+                                stopLift();
+                                /*
+                                if (liftDown_button() == true) {
+                                    liftMotor.setPower(-liftPower);
+                                    telemetry.addData("going down :0", "");
+                                } else if (liftUp_button() >= 0.5){
+                                    liftMotor.setPower(liftPower);
+                                    telemetry.addData("going up :0", "");
+                                }
+                                else{
+                                    stopLift();
+                                }
+                                */
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     public void goToPos2(){
         if (pos2_button() == true){
@@ -516,15 +588,21 @@ public void GoToPositionDown(int targetsgotdeals){
 
 //Gripper Methods
 
-public void GripperIn() {
-    if (left_trigger() == 1) {
+public void GripperOpen() {
+    if (GripOpenButton() == true) {
         gripperServo.setPosition(servoGripPosition);
 
     }
 }
-public void GripperOut() {if (left_bumper() == true) {
+public void GripperClose(){
+    if (GripCloseButton() == true) {
         gripperServo.setPosition(0);
     }
+}
+
+public void GripperFunction() {
+        GripperClose();
+        GripperOpen();
 }
 
     /*****************************/
