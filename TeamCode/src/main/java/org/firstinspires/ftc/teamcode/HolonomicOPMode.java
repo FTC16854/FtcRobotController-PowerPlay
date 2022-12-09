@@ -74,10 +74,9 @@ public class HolonomicOPMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //HolonomicDrive();
+            HolonomicDrive();
+            GoToPosManual();
             GripperFunction();
-            //LiftMoveButtons();
-            ManuelLiftMove();
             telemetry.addData("position ",GetLiftPosition());
             telemetry.addData("atbottom ",LiftAtBottom());
 

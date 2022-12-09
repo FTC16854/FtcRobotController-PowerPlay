@@ -75,7 +75,10 @@ public class FieldCentricOpMOde extends MainParentOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             FieldCentricDrive();
-
+            GoToPosManual();
+            GripperFunction();
+            telemetry.addData("position ",GetLiftPosition());
+            telemetry.addData("atbottom ",LiftAtBottom());
 
             checkEmergencyStop();
 

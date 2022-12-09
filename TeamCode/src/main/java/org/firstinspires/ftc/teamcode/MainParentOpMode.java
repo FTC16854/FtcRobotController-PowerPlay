@@ -94,7 +94,7 @@ public class MainParentOpMode extends LinearOpMode {
     // gyro stuff
    // private ModernRoboticsI2cRangeSensor gyroSensor = null;
 
-    BNO055IMU gyroSensorInterface;
+    BNO055IMU imu;
     Orientation angles = new Orientation();
 
     // private CRServo intakeServo = null;
@@ -103,16 +103,17 @@ public class MainParentOpMode extends LinearOpMode {
 
 
     // Global Variables/Constants
-    double liftPower = 0.7;
+    double liftPower = 1;
     double liftStop = 0;
     double servoGripPosition = 0.4;
 
     // Lift Positions
-    int pos1= 0;    //Bottom
+    int pos0 = 0; // bottom
+    int pos1= 479;    //Just Above ConÉ
     int pos2= 3318;
     int pos3= 5687;
     int pos4= 7804;  //Top
-    int posmax= 8290; // MAX
+    int posmax= 8200; // MAX
 
     boolean goToPos1 = false;
     boolean goTopos2 = false;
@@ -134,7 +135,7 @@ public class MainParentOpMode extends LinearOpMode {
 
         LimitSwitch = hardwareMap.get(DigitalChannel.class, "lift_limit_switch");
 
-
+        gyroInitialize();
 
         //Set motor run mode (if using SPARK Mini motor controllers)
 
@@ -293,7 +294,7 @@ public class MainParentOpMode extends LinearOpMode {
     }
 
     public double getAngle() {
-   Orientation Angles = gyroSensorInterface.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+   Orientation Angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
    double heading = Angles.firstAngle;
    return heading;
     }
@@ -343,11 +344,12 @@ public class MainParentOpMode extends LinearOpMode {
 
         double PIOFFSET = Math.PI/4; //45 degrees
 
-        double robotAngle= Math.atan2(gamepad1.left_stick_y,-gamepad1.left_stick_x)-(Math.PI/2)-(getAngle());
+        double robotAngle= Math.atan2(gamepad1.left_stick_y,-gamepad1.left_stick_x)-(Math.PI/2)-(Math.toRadians(getAngle()));
 
         double robotSpeed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
         double rotation = -gamepad1.right_stick_x;
+
 
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
@@ -369,7 +371,7 @@ public class MainParentOpMode extends LinearOpMode {
 
 
     public void gyroInitialize(){
-        gyroSensorInterface.getParameters();
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -379,11 +381,11 @@ public class MainParentOpMode extends LinearOpMode {
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled = false;
 
-        gyroSensorInterface = hardwareMap.get(BNO055IMU.class, "gyro_sensor_interface");
-        gyroSensorInterface.initialize(parameters);
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
 
-        while(!isStopRequested() && !gyroSensorInterface.isGyroCalibrated()){
+        while(!isStopRequested() && !imu.isGyroCalibrated()){
             sleep(500);
             idle();
         }
@@ -407,11 +409,20 @@ public class MainParentOpMode extends LinearOpMode {
         return LimitSwitch.getState();
     }
 
+    public boolean liftAtTop(){
+        if (GetLiftPosition() >posmax){
+            return  true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public void ManuelLiftMove() {
         if (liftDown_button() == true) {
             liftMotor.setPower(-liftPower);
             telemetry.addData("going down :0", "");
-        } else if (liftUp_button() >= 0.5){
+        } else if (liftUp_button()){
             liftMotor.setPower(liftPower);
             telemetry.addData("going up :0", "");
         }
@@ -426,7 +437,7 @@ public class MainParentOpMode extends LinearOpMode {
     }
 
     public void liftUp(){
-        if (liftUp_button() >= 0.5){
+        if (liftUp_button()){
             liftMotor.setPower(liftPower);
             telemetry.addData("going up :0", "");
         }/*
@@ -459,7 +470,7 @@ public void GoToPositionDown(int targetsGotDeals){
 
 public void GotoPosition(int posL){
        if (GetLiftPosition() > posL+200){
-           liftMotor.setPower(-liftPower);
+           liftMotor.setPower(-liftPower*.7);
        }
        else {
            if (GetLiftPosition() < posL-200){
@@ -481,60 +492,59 @@ public void GoToPosManual(){
             goTopos2 =false;
             goToPos3 =false;
             goTopos4 =false;
+        }
+        if (pos2_button()){
+            goToPos1 =false;
+            goTopos2 =true;
+            goToPos3 =false;
+            goTopos4 =false;
 
         }
-    if (pos2_button()){
-        goToPos1 =false;
-        goTopos2 =true;
-        goToPos3 =false;
-        goTopos4 =false;
+        if (pos3_button()){
+            goToPos1 =false;
+            goTopos2 =false;
+            goToPos3 =true;
+            goTopos4 =false;
 
-    }
-    if (pos3_button()){
-        goToPos1 =false;
-        goTopos2 =false;
-        goToPos3 =true;
-        goTopos4 =false;
+        }
+        if (pos4_button()){
+            goToPos1 =false;
+            goTopos2 =false;
+            goToPos3 =false;
+            goTopos4 =true;
 
-    }
-    if (pos4_button()){
-        goToPos1 =false;
-        goTopos2 =false;
-        goToPos3 =false;
-        goTopos4 =true;
+        }
 
-    }
-
-    if (liftUp_button()){
-        liftMotor.setPower(liftPower);
-        goToPos1 =false;
-        goTopos2 =false;
-        goToPos3 =false;
-        goTopos4 =false;
-    } else{
-        if (liftDown_button()){
-            liftMotor.setPower(-liftPower);
+        if (liftUp_button() && !liftAtTop()){
+            liftMotor.setPower(liftPower);
             goToPos1 =false;
             goTopos2 =false;
             goToPos3 =false;
             goTopos4 =false;
+        } else{
+            if (liftDown_button() && !LiftAtBottom()){
+                liftMotor.setPower(-liftPower*.7);
+                goToPos1 =false;
+                goTopos2 =false;
+                goToPos3 =false;
+                goTopos4 =false;
+            }
+            else if(goToPos1) {
+                GotoPosition(pos1);
+            }
+            else if(goTopos2){
+                GotoPosition(pos2);
+            }
+            else if(goToPos3){
+                GotoPosition(pos3);
+            }
+            else if(goTopos4){
+                GotoPosition(pos4);
+            }
+            else {
+                liftMotor.setPower(0);
+            }
         }
-        else if(goToPos1) {
-            GotoPosition(pos1);
-        }
-        else if(goTopos2){
-            GotoPosition(pos1);
-        }
-        else if(goToPos3){
-            GotoPosition(pos1);
-        }
-        else if(goTopos4){
-            GotoPosition(pos4);
-        }
-        else {
-            liftMotor.setPower(0);
-        }
-    }
 
 }
  //hlol
@@ -705,7 +715,7 @@ public void GripperFunction() {
         double motorspeedLB;
 
         double PIOFFSET = Math.PI / 4;
-j
+
         if(currentTimeMillis() <= millisecondTime) {
 
             motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
