@@ -165,10 +165,13 @@ public class MainParentOpMode extends LinearOpMode {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
 
         //quick, dirty test
-
+    Homing();
+        /*
         for(int i =0; i < 200;i ++){
             Homing();
         }
+
+ */
         //Update Driver Station Status Message after init
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
@@ -464,7 +467,7 @@ public void SetLiftOffSet(){
 }
 
 public void Homing (){
-        while(!LiftAtBottom()&&opModeIsActive()){
+        while((!LiftAtBottom()&&opModeIsActive())||(!LiftAtBottom()&&opModeInInit())){
             liftMotor.setPower(-0.3);
         }
         SetLiftOffSet();
