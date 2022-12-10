@@ -113,7 +113,8 @@ public class MainParentOpMode extends LinearOpMode {
     int pos2= 3318;
     int pos3= 5687;
     int pos4= 7804;  //Top
-    int posmax= 8200; // MAX
+    int posmax= 7850; // MAX
+    int LiftOffSet= 0;  // Initialize to 0
 
     boolean goToPos1 = false;
     boolean goTopos2 = false;
@@ -163,6 +164,11 @@ public class MainParentOpMode extends LinearOpMode {
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
 
+        //quick, dirty test
+
+        for(int i =0; i < 200;i ++){
+            Homing();
+        }
         //Update Driver Station Status Message after init
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
@@ -418,6 +424,7 @@ public class MainParentOpMode extends LinearOpMode {
         }
     }
 
+    /*
     public void ManuelLiftMove() {
         if (liftDown_button() == true) {
             liftMotor.setPower(-liftPower);
@@ -429,12 +436,8 @@ public class MainParentOpMode extends LinearOpMode {
         else{
             stopLift();
         }
-
-        /*
-        else {
-            stopLift();
-        }*/
     }
+*/
 
     public void liftUp(){
         if (liftUp_button()){
@@ -447,8 +450,24 @@ public class MainParentOpMode extends LinearOpMode {
 
     }
 
-public int GetLiftPosition(){
+public int GetLiftRealPos(){
     return -rightBack.getCurrentPosition();
+}
+
+public int GetLiftPosition() {
+    return GetLiftRealPos() - LiftOffSet;
+}
+
+public void SetLiftOffSet(){
+        LiftOffSet = GetLiftRealPos();
+
+}
+
+public void Homing (){
+        while(!LiftAtBottom()&&opModeIsActive()){
+            liftMotor.setPower(-0.3);
+        }
+        SetLiftOffSet();
 }
 
 public void GoToPositionUp(int tx){
@@ -716,22 +735,18 @@ public void GripperFunction() {
 
         double PIOFFSET = Math.PI / 4;
 
-        if(currentTimeMillis() <= millisecondTime) {
+        motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
+        motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
+        motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
+        motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
 
-            motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
-            motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
-            motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
-            motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+        leftFront.setPower(motorspeedLF);
+        leftBack.setPower(motorspeedLB);
+        rightBack.setPower(motorspeedRB);
+        rightFront.setPower(motorspeedRF);
 
-            leftFront.setPower(motorspeedLF);
-            leftBack.setPower(motorspeedLB);
-            rightBack.setPower(motorspeedRB);
-            rightFront.setPower(motorspeedRF);
-        }
-        if (resetGyroButton()) {
-            gyroInitialize();
 
-        }
+
     }
 
 
