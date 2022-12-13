@@ -155,8 +155,6 @@ public class MainParentOpMode extends LinearOpMode {
 
         //gripperServo.setDirection(Servo.Direction.FORWARD);
 
-        //Set range for special Servos
-        //wobbleLift.scaleRange(0.15,.85); //Savox PWM range is between 0.8 and 2.2 ms. REV Hub puts out 0.5-2.5ms.
 
         //Set brake or coast modes.
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
