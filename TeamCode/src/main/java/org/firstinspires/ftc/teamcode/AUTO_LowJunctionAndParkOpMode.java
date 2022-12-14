@@ -74,19 +74,24 @@ public class AUTO_LowJunctionAndParkOpMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-           // AUTO_Drive(270, 0.4, 0, 500 ); // DRIVE LEFT
-            AUTO_GoToPosition2();
+            AUTO_Drive(270, 0.4, 0, 1000 ); // DRIVE LEFT
+            //AUTO_GoToPosition2();
+            sleep(3000);
             AUTO_Drive(180, 0.4 ,0, 500); // DRIVE FORWARD
-           //AUTO_gripperClose();
+            sleep(1000);
+            //AUTO_gripperClose();
             AUTO_gripperOpen();
-            AUTO_Drive(0, 0.4, 0, 500); // DRIVE BACK
-            AUTO_GoToPosition1();
+            sleep(2000);
+            AUTO_Drive(0, 0.4, 0, 1000); // DRIVE BACK
+            //AUTO_GoToPosition1();
             AUTO_Drive(90, 0.4d, 0, 1500); // DRIVE RIGHT
 
 
             checkEmergencyStop();
 
             telemetry.update();
+
+            terminateOpModeNow();
         }
     }
 

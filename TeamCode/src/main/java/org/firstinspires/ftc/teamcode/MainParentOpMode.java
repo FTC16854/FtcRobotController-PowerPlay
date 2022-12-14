@@ -711,13 +711,13 @@ public void GoToPosManual(){
 
 public void GripperOpen() {
     if (GripOpenButton() == true) {
-        gripperServo.setPosition(servoGripPosition);
+        gripperServo.setPosition(0);
 
     }
 }
 public void GripperClose(){
     if (GripCloseButton() == true) {
-        gripperServo.setPosition(0);
+        gripperServo.setPosition(servoGripPosition);
     }
 }
 
@@ -763,10 +763,10 @@ public void GripperFunction() {
 
 
 public void AUTO_gripperClose(){
-        gripperServo.setPosition(servoGripPosition);
+        gripperServo.setPosition(0);
 }
 public void AUTO_gripperOpen(){
-        gripperServo.setPosition(0);
+        gripperServo.setPosition(servoGripPosition);
 }
 
 public void AUTO_GoToPosition1(){
