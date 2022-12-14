@@ -162,8 +162,9 @@ public class MainParentOpMode extends LinearOpMode {
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //BRAKE or FLOAT (Coast)
 
+
+        //Homing();
         //quick, dirty test
-    Homing();
         /*
         for(int i =0; i < 200;i ++){
             Homing();
@@ -728,24 +729,33 @@ public void GripperFunction() {
     /*****************************/
     //Autonomous Functions
 
-    public void AUTO_Drive(double robotAngle, double robotSpeed, double rotation, double millisecondTime) {
+
+
+
+    public void AUTO_Drive(double robotAngle, double robotSpeed, double rotation, long millisecondTime) {
         double motorspeedRF;
         double motorspeedRB;
         double motorspeedLF;
         double motorspeedLB;
 
+        robotAngle = Math.toRadians(robotAngle);
+
         double PIOFFSET = Math.PI / 4;
 
-        motorspeedRF = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) - rotation;
-        motorspeedRB = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) - rotation;
-        motorspeedLF = (robotSpeed * Math.cos(robotAngle + PIOFFSET)) + rotation;
-        motorspeedLB = (robotSpeed * Math.sin(robotAngle + PIOFFSET)) + rotation;
+        motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
+        motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
+        motorspeedRB = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) - rotation;
+
+
 
         leftFront.setPower(motorspeedLF);
         leftBack.setPower(motorspeedLB);
         rightBack.setPower(motorspeedRB);
         rightFront.setPower(motorspeedRF);
 
+        sleep(millisecondTime);
+        stopDrive();
 
 
     }

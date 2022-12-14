@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@Autonomous(name="AUTOOPMODE", group="Linear Opmode")
+@Autonomous(name="Termianl park", group="Linear Opmode")
 //@Disabled
 public class AUTO_TerminalParkOpMode extends MainParentOpMode {
 
@@ -76,7 +76,8 @@ public class AUTO_TerminalParkOpMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            AUTO_Drive(180,1, 0, 500);
+            //move right
+            AUTO_Drive(90,0.4, 0, 800);
             checkEmergencyStop();
 
             telemetry.update();
