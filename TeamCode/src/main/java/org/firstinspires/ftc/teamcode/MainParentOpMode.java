@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.System.currentTimeMillis;
-
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -109,7 +107,7 @@ public class MainParentOpMode extends LinearOpMode {
 
     // Lift Positions
     int pos0 = 0; // bottom
-    int pos1= 479;    //Just Above ConÉ
+    int pos1= 479;    //Just Above ConÉ on floor
     int pos2= 3318;
     int pos3= 5687;
     int pos4= 7804;  //Top
@@ -117,9 +115,9 @@ public class MainParentOpMode extends LinearOpMode {
     int LiftOffSet= 0;  // Initialize to 0
 
     boolean goToPos1 = false;
-    boolean goTopos2 = false;
+    boolean goToPos2 = false;
     boolean goToPos3 = false;
-    boolean goTopos4 = false;
+    boolean goToPos4 = false;
 
     public void initialize(){
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -472,24 +470,7 @@ public void Homing (){
         SetLiftOffSet();
 }
 
-public void GoToPositionUp(int tx){
-    if (GetLiftPosition()  <= tx){
-        liftMotor.setPower(liftPower);
-        telemetry.addData("Up To ",tx);
-        telemetry.update();
-    }
-}
-
-public void GoToPositionDown(int targetsGotDeals){
-    if (GetLiftPosition() >= targetsGotDeals){
-        liftMotor.setPower(-liftPower*.5);
-        telemetry.addData("Down To ",targetsGotDeals);
-        telemetry.update();
-    }
-
-}
-
-public void GotoPosition(int posL){
+public void GoToPosition(int posL){
        if (GetLiftPosition() > posL+200){
            liftMotor.setPower(-liftPower*.7);
        }
@@ -500,9 +481,9 @@ public void GotoPosition(int posL){
            else {
                liftMotor.setPower(0);
                goToPos1 =false;
-               goTopos2 =false;
+               goToPos2 =false;
                goToPos3 =false;
-               goTopos4 =false;
+               goToPos4 =false;
            }
        }
 }
@@ -510,57 +491,57 @@ public void GotoPosition(int posL){
 public void GoToPosManual(){
         if (pos1_button()){
             goToPos1 =true;
-            goTopos2 =false;
+            goToPos2 =false;
             goToPos3 =false;
-            goTopos4 =false;
+            goToPos4 =false;
         }
         if (pos2_button()){
             goToPos1 =false;
-            goTopos2 =true;
+            goToPos2 =true;
             goToPos3 =false;
-            goTopos4 =false;
+            goToPos4 =false;
 
         }
         if (pos3_button()){
             goToPos1 =false;
-            goTopos2 =false;
+            goToPos2 =false;
             goToPos3 =true;
-            goTopos4 =false;
+            goToPos4 =false;
 
         }
         if (pos4_button()){
             goToPos1 =false;
-            goTopos2 =false;
+            goToPos2 =false;
             goToPos3 =false;
-            goTopos4 =true;
+            goToPos4 =true;
 
         }
 
         if (liftUp_button() && !liftAtTop()){
             liftMotor.setPower(liftPower);
             goToPos1 =false;
-            goTopos2 =false;
+            goToPos2 =false;
             goToPos3 =false;
-            goTopos4 =false;
+            goToPos4 =false;
         } else{
             if (liftDown_button() && !LiftAtBottom()){
                 liftMotor.setPower(-liftPower*.7);
                 goToPos1 =false;
-                goTopos2 =false;
+                goToPos2 =false;
                 goToPos3 =false;
-                goTopos4 =false;
+                goToPos4 =false;
             }
             else if(goToPos1) {
-                GotoPosition(pos1);
+                GoToPosition(pos1);
             }
-            else if(goTopos2){
-                GotoPosition(pos2);
+            else if(goToPos2){
+                GoToPosition(pos2);
             }
             else if(goToPos3){
-                GotoPosition(pos3);
+                GoToPosition(pos3);
             }
-            else if(goTopos4){
-                GotoPosition(pos4);
+            else if(goToPos4){
+                GoToPosition(pos4);
             }
             else {
                 liftMotor.setPower(0);
@@ -665,7 +646,8 @@ public void GoToPosManual(){
         }
     }
 
-
+    // Old goToPos functions - superceded
+/*
     public void goToPos2(){
         if (pos2_button() == true){
             if (GetLiftPosition() <= pos2-10) {
@@ -703,10 +685,27 @@ public void GoToPosManual(){
             stopLift();
         }
     }
+*/
+
+    public void GoToPositionUp(int tx){
+        if (GetLiftPosition()  <= tx){
+            liftMotor.setPower(liftPower);
+            telemetry.addData("Up To ",tx);
+            telemetry.update();
+        }
+    }
+
+    public void GoToPositionDown(int targetsGotDeals){
+        if (GetLiftPosition() >= targetsGotDeals){
+            liftMotor.setPower(-liftPower*.5);
+            telemetry.addData("Down To ",targetsGotDeals);
+            telemetry.update();
+        }
+
+    }
 
 
-
-
+/******************************************/
 //Gripper Methods
 
 public void GripperOpen() {
