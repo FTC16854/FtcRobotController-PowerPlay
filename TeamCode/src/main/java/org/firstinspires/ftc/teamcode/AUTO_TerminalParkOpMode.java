@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
+
 /**
  * Original FTC opmode header block
  *
@@ -77,10 +78,16 @@ public class AUTO_TerminalParkOpMode extends MainParentOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //move right
-            AUTO_Drive(90,0.4, 0, 800);
+
+            AUTO_Drive(90,0.5, 0, 1000);
+
+            sleep(750);
+
             checkEmergencyStop();
 
             telemetry.update();
+
+            terminateOpModeNow();
         }
     }
 

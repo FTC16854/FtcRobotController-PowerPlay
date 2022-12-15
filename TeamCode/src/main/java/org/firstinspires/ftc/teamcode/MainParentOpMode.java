@@ -145,6 +145,10 @@ public class MainParentOpMode extends LinearOpMode {
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
 
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
         //liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -708,21 +712,21 @@ public void GoToPosManual(){
 /******************************************/
 //Gripper Methods
 
-public void GripperOpen() {
+public void GripperIn() {
     if (GripOpenButton() == true) {
         gripperServo.setPosition(0);
 
     }
 }
-public void GripperClose(){
+public void GripperHold(){
     if (GripCloseButton() == true) {
         gripperServo.setPosition(servoGripPosition);
     }
 }
 
 public void GripperFunction() {
-        GripperClose();
-        GripperOpen();
+        GripperHold();
+        GripperIn();
 }
 
     /*****************************/
@@ -761,28 +765,14 @@ public void GripperFunction() {
 
 
 
-public void AUTO_gripperClose(){
+public void AUTO_gripperIn(){
         gripperServo.setPosition(0);
 }
-public void AUTO_gripperOpen(){
+public void AUTO_gripperHold(){
         gripperServo.setPosition(servoGripPosition);
 }
 
-public void AUTO_GoToPosition1(){
-        GoToPositionDown(pos1);
-}
 
-    public void AUTO_GoToPosition2(){
-        GoToPositionUp(pos2);
-    }
-
-    public void AUTO_GoToPosition3(){
-        GoToPositionUp(pos3);
-    }
-
-    public void AUTO_GoToPosition4(){
-        GoToPositionUp(pos4);
-    }
 
 
 

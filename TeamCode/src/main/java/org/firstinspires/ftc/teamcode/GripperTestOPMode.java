@@ -75,8 +75,8 @@ public class GripperTestOPMode extends MainParentOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-           GripperOpen();
-           GripperClose();
+           GripperIn();
+           GripperHold();
 
 
             checkEmergencyStop();
