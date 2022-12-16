@@ -328,6 +328,15 @@ public class MainParentOpMode extends LinearOpMode {
 
         double rotation = -gamepad1.right_stick_x;
 
+        // Sensitivity Curve
+        // y=x^2
+        if (robotSpeed < 0){
+            robotSpeed = Math.pow(robotSpeed,2);
+        }
+        else{robotSpeed = -Math.pow(robotSpeed,2);
+        }
+
+
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
         motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
@@ -360,6 +369,13 @@ public class MainParentOpMode extends LinearOpMode {
 
         double rotation = -gamepad1.right_stick_x;
 
+        // Sensitivity Curve
+        // y=x^2
+        if (robotSpeed < 0){
+            robotSpeed = Math.pow(robotSpeed,2);
+        }
+        else{robotSpeed = -Math.pow(robotSpeed,2);
+        }
 
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
