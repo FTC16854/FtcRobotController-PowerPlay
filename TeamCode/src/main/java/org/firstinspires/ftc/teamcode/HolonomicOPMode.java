@@ -80,7 +80,7 @@ public class HolonomicOPMode extends MainParentOpMode {
             telemetry.addData("position ",GetLiftPosition());
             telemetry.addData("atbottom ",LiftAtBottom());
 
-
+            manualLiftReset();
             checkEmergencyStop();
             telemetry.update();
         }

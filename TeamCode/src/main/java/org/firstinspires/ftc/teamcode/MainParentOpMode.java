@@ -48,6 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Original FTC opmode header block
@@ -253,6 +254,7 @@ public class MainParentOpMode extends LinearOpMode {
     private boolean x_button(){return gamepad1.x;}
 
 
+    private boolean resetEncoderbutton(){return gamepad2.dpad_down;}
     private boolean liftDown_button(){return gamepad2.right_bumper;}
     private boolean liftUp_button(){
         if(gamepad2.right_trigger>.5){
@@ -331,9 +333,10 @@ public class MainParentOpMode extends LinearOpMode {
         // Sensitivity Curve
         // y=x^2
         if (robotSpeed < 0){
-            robotSpeed = Math.pow(robotSpeed,2);
+            robotSpeed = -Math.pow(robotSpeed,2);
         }
-        else{robotSpeed = -Math.pow(robotSpeed,2);
+        else{
+            robotSpeed = Math.pow(robotSpeed,2);
         }
 
 
@@ -372,9 +375,9 @@ public class MainParentOpMode extends LinearOpMode {
         // Sensitivity Curve
         // y=x^2
         if (robotSpeed < 0){
-            robotSpeed = Math.pow(robotSpeed,2);
+            robotSpeed = -Math.pow(robotSpeed,2);
         }
-        else{robotSpeed = -Math.pow(robotSpeed,2);
+        else{robotSpeed = Math.pow(robotSpeed,2);
         }
 
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
@@ -489,6 +492,13 @@ public void Homing (){
         }
         SetLiftOffSet();
 }
+
+public void manualLiftReset (){
+        if(resetEncoderbutton()){
+            SetLiftOffSet();
+        }
+}
+
 
 public void GoToPosition(int posL){
        if (GetLiftPosition() > posL+200){

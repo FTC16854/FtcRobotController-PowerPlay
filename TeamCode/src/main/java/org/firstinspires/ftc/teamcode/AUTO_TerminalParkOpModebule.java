@@ -29,7 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
 /**
@@ -53,9 +53,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@TeleOp(name="FeildCentric", group="Linear Opmode")
+@Autonomous(name="Blue Termianl park", group="Linear Opmode")
 //@Disabled
-public class FieldCentricOpMOde extends MainParentOpMode {
+public class AUTO_TerminalParkOpModebule extends MainParentOpMode {
 
 
     @Override
@@ -74,16 +74,17 @@ public class FieldCentricOpMOde extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            FieldCentricDrive();
-            GoToPosManual();
-            GripperFunction();
-            telemetry.addData("position ",GetLiftPosition());
-            telemetry.addData("atbottom ",LiftAtBottom());
+            //move right
 
-            manualLiftReset();
+            AUTO_Drive(90,0.5, 0, 1000);
+
+            sleep(750);
+
             checkEmergencyStop();
 
             telemetry.update();
+
+            terminateOpModeNow();
         }
     }
 

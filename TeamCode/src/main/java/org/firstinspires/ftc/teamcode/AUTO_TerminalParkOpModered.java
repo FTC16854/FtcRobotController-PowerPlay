@@ -30,9 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 
 
 /**
@@ -56,9 +53,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * override the ParentOpMode runOpMode() method.
  **/
 
-@Autonomous(name="Termianl park", group="Linear Opmode")
+@Autonomous(name="Red Termianl park", group="Linear Opmode")
 //@Disabled
-public class AUTO_TerminalParkOpMode extends MainParentOpMode {
+public class AUTO_TerminalParkOpModered extends MainParentOpMode {
 
 
     @Override
@@ -77,9 +74,9 @@ public class AUTO_TerminalParkOpMode extends MainParentOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //move right
+            //move left
 
-            AUTO_Drive(90,0.5, 0, 1000);
+            AUTO_Drive(270,0.5, 0, 1000);
 
             sleep(750);
 

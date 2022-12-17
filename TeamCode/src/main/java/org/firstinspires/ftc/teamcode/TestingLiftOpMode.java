@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
@@ -54,7 +55,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  **/
 
 @TeleOp(name="LiftTest_Matt", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class TestingLiftOpMode extends ParentOpModeTesting {
 
 
