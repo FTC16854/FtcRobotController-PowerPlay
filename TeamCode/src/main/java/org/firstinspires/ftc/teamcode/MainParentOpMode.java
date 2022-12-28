@@ -29,18 +29,15 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
-
-
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -48,7 +45,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * Original FTC opmode header block
@@ -338,6 +334,9 @@ public class MainParentOpMode extends LinearOpMode {
         else{
             robotSpeed = Math.pow(robotSpeed,2);
         }
+        if (GetLiftPosition()>pos3){
+            robotSpeed = robotSpeed/2;
+        }
 
 
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
@@ -373,13 +372,15 @@ public class MainParentOpMode extends LinearOpMode {
         double rotation = -gamepad1.right_stick_x;
 
         // Sensitivity Curve
-        // y=x^2
+        // y=x^4
         if (robotSpeed < 0){
-            robotSpeed = -Math.pow(robotSpeed,2);
+            robotSpeed = -Math.pow(robotSpeed,4);
         }
-        else{robotSpeed = Math.pow(robotSpeed,2);
+        else{robotSpeed = Math.pow(robotSpeed,4);
         }
-
+        if (GetLiftPosition()>pos3){
+        robotSpeed = robotSpeed/2;
+        }
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
         motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;
@@ -389,6 +390,8 @@ public class MainParentOpMode extends LinearOpMode {
         leftBack.setPower(motorspeedLB);
         rightBack.setPower(motorspeedRB);
         rightFront.setPower(motorspeedRF);
+
+
 
         if (resetGyroButton()){
             gyroInitialize();
