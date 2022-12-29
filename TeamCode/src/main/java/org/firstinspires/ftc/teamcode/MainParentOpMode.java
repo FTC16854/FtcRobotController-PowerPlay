@@ -105,10 +105,10 @@ public class MainParentOpMode extends LinearOpMode {
     // Lift Positions
     int pos0 = 0; // bottom
     int pos1= 479;    //Just Above ConÉ on floor
-    int pos2= 3318;
-    int pos3= 5687;
-    int pos4= 7804;  //Top
-    int posmax= 7850; // MAX
+    int pos2= 2373;
+    int pos3= 3880;
+    int pos4= 5250;  //Top
+    int posmax= 5300; // MAX
     int LiftOffSet= 0;  // Initialize to 0
 
     boolean goToPos1 = false;
