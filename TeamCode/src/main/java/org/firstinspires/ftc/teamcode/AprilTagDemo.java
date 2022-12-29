@@ -125,6 +125,7 @@ public class AprilTagDemo extends LinearOpMode
                         aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
                     }
 
+                    //for each detection (of type: AprilTagDetection) in detections arraylist...
                     for(AprilTagDetection detection : detections)
                     {
                         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
