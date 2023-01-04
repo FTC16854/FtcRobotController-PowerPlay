@@ -108,7 +108,7 @@ public class MainParentOpMode extends LinearOpMode {
     int pos2= 2373;
     int pos3= 3880;
     int pos4= 5250;  //Top
-    int posmax= 5300; // MAX
+    int posmax= 5325; // MAX
     int LiftOffSet= 0;  // Initialize to 0
 
     boolean goToPos1 = false;
@@ -324,7 +324,7 @@ public class MainParentOpMode extends LinearOpMode {
 
         double robotSpeed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
-        double rotation = -gamepad1.right_stick_x;
+        double rotation = -gamepad1.right_stick_x*0.7;
 
         // Sensitivity Curve
         // y=x^2
@@ -369,7 +369,7 @@ public class MainParentOpMode extends LinearOpMode {
 
         double robotSpeed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
-        double rotation = -gamepad1.right_stick_x;
+        double rotation = -gamepad1.right_stick_x*0.7;
 
         // Sensitivity Curve
         // y=x^4
