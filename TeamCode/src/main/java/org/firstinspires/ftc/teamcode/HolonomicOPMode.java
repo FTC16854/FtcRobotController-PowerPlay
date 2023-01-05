@@ -77,6 +77,7 @@ public class HolonomicOPMode extends MainParentOpMode {
             HolonomicDrive();
             GoToPosManual();
             GripperFunction();
+            HomingManual();
             telemetry.addData("position ",GetLiftPosition());
             telemetry.addData("atbottom ",LiftAtBottom());
 

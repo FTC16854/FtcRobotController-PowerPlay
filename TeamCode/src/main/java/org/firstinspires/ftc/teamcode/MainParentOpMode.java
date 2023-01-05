@@ -104,11 +104,11 @@ public class MainParentOpMode extends LinearOpMode {
 
     // Lift Positions
     int pos0 = 0; // bottom
-    int pos1= 479;    //Just Above ConÉ on floor
+    int pos1= 459;    //Just Above ConÉ on floor
     int pos2= 2373;
     int pos3= 3880;
     int pos4= 5250;  //Top
-    int posmax= 5325; // MAX
+    int posmax= 5280; // MAX
     int LiftOffSet= 0;  // Initialize to 0
 
     boolean goToPos1 = false;
@@ -250,7 +250,11 @@ public class MainParentOpMode extends LinearOpMode {
     private boolean x_button(){return gamepad1.x;}
 
 
-    private boolean resetEncoderbutton(){return gamepad2.dpad_down;}
+    private boolean resetEncoderbutton(){return gamepad2.dpad_up;}
+    private boolean liftHomingButton(){
+        return gamepad2.dpad_down;
+    }
+
     private boolean liftDown_button(){return gamepad2.right_bumper;}
     private boolean liftUp_button(){
         if(gamepad2.right_trigger>.5){
@@ -487,6 +491,12 @@ public int GetLiftPosition() {
 public void SetLiftOffSet(){
         LiftOffSet = GetLiftRealPos();
 
+}
+
+public void HomingManual(){
+        if(liftHomingButton()){
+            Homing();
+        }
 }
 
 public void Homing (){

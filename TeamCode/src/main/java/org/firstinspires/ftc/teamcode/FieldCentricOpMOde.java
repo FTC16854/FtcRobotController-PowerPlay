@@ -77,6 +77,7 @@ public class FieldCentricOpMOde extends MainParentOpMode {
             FieldCentricDrive();
             GoToPosManual();
             GripperFunction();
+            HomingManual();
             telemetry.addData("position ",GetLiftPosition());
             telemetry.addData("atbottom ",LiftAtBottom());
 

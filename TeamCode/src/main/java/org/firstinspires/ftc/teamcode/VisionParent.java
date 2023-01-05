@@ -139,14 +139,15 @@ public class VisionParent extends MainParentOpMode {
 
     public int ApriltagId(){
         //sleep(1000);
-        double timr =10000;
-        double starttimr = System.currentTimeMillis();
-        double dietmir = timr + starttimr;
+        long timr = 6000; // Timeout
+        long starttimr = System.currentTimeMillis();
+        long dietmir = timr + starttimr;
 
         ArrayList<AprilTagDetection> aprilTags = aprilTagDetectionPipeline.getLatestDetections();
 
         while(aprilTags.size()<1 && System.currentTimeMillis()<dietmir){
             aprilTags = aprilTagDetectionPipeline.getLatestDetections();
+
         }
 
         if (aprilTags.size()>0){

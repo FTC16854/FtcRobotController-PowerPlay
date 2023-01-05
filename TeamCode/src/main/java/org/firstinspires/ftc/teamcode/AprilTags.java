@@ -79,8 +79,8 @@ public class AprilTags extends VisionParent {
             else if(detectedTagID == 2){
                 AUTO_Drive(180,0.5, 0, 1800);
             }
-            else {
-                AUTO_Drive(90,0.5, 0, 1500);
+            else { //3
+                AUTO_Drive(90,0.5, 0, 1100);
                 AUTO_Drive(180,0.5, 0, 1800);
 
             }
