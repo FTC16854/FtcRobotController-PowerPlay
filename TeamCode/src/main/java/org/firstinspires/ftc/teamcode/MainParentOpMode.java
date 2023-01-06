@@ -339,9 +339,10 @@ public class MainParentOpMode extends LinearOpMode {
             robotSpeed = Math.pow(robotSpeed,2);
         }
         if (GetLiftPosition()>pos3){
-            robotSpeed = robotSpeed/2;
+            robotSpeed = robotSpeed*.8;
         }
 
+        robotSpeed = robotSpeed*.6;
 
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
@@ -352,11 +353,6 @@ public class MainParentOpMode extends LinearOpMode {
         leftBack.setPower(motorspeedLB);
         rightBack.setPower(motorspeedRB);
         rightFront.setPower(motorspeedRF);
-/*
-        if (resetGyroButton()){
-            gyroInitialize();
-        }
-        */
 
 
     }
@@ -383,8 +379,11 @@ public class MainParentOpMode extends LinearOpMode {
         else{robotSpeed = Math.pow(robotSpeed,4);
         }
         if (GetLiftPosition()>pos3){
-        robotSpeed = robotSpeed/2;
+        robotSpeed = robotSpeed*.8;
         }
+
+        robotSpeed = robotSpeed*.6;
+
         motorspeedLF = (robotSpeed*Math.cos(robotAngle+PIOFFSET)) + rotation;
         motorspeedRF = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) - rotation;
         motorspeedLB = (robotSpeed*Math.sin(robotAngle+PIOFFSET)) + rotation;

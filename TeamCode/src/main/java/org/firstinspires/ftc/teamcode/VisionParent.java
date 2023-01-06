@@ -145,7 +145,7 @@ public class VisionParent extends MainParentOpMode {
 
         ArrayList<AprilTagDetection> aprilTags = aprilTagDetectionPipeline.getLatestDetections();
 
-        while(aprilTags.size()<1 && System.currentTimeMillis()<dietmir){
+        while((aprilTags.size()<1) && (System.currentTimeMillis()<dietmir) && (opModeIsActive())){
             aprilTags = aprilTagDetectionPipeline.getLatestDetections();
 
         }
